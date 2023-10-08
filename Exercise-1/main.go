@@ -5,6 +5,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strings"
 )
 
 type Problem struct {
@@ -50,7 +51,7 @@ func parseLines(lines [][]string) []Problem {
 	for i, line := range lines {
 		ret[i] = Problem{
 			Question: line[0],
-			Answer:   line[1],
+			Answer:   strings.TrimSpace(line[1]),
 		}
 	}
 	return ret
