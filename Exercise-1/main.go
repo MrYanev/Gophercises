@@ -51,7 +51,7 @@ problemloop:
 		}()
 		select {
 		case <-timer.C:
-			fmt.Printf("You scored %d out of %d.\n", correct, len(problems))
+			fmt.Println("You ran out of time")
 			break problemloop
 		case ans := <-ansChan:
 			if ans == p.Answer {
