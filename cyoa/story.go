@@ -3,7 +3,9 @@ package cyoa
 import (
 	"encoding/json"
 	"io"
+	"log"
 	"net/http"
+	"strings"
 	"text/template"
 )
 
@@ -101,7 +103,7 @@ func JsonStory(r io.Reader) (Story, error) {
 	return story, nil
 }
 
-func NewHandler(s Story) handler {
+func NewHandler(s Story) http.Handler {
 	return handler{s}
 }
 
@@ -110,8 +112,21 @@ type handler struct {
 }
 
 func (h *handler) ServerHTTP(w http.ResponseWriter, r *http.Request) {
-	err := tpl.Execute(w, h.s["intro"])
-	if err != nil {
-		panic(err)
+	path := strings.TrimSpace(r.URL.Path)
+	if path == "" || path == "/" {
+		path = "/intro"
 	}
+	//"/intro"
+	path = path[1:]
+
+	// ["intro"]
+	if chapter, ok := h.s[path]; ok {
+		err := tpl.Execute(w, chapter)
+		if err != nil {
+			log.Printf("%v", err)
+			http.Error(w, "Something went wrong!", http.StatusInternalServerError)
+		}
+		return
+	}
+	http.Error(w, "Chapter not found", http.StatusNotFound)
 }
