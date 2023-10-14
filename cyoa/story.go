@@ -103,7 +103,7 @@ func JsonStory(r io.Reader) (Story, error) {
 	return story, nil
 }
 
-func NewHandler(s Story) http.Handler {
+func NewHandler(s Story) handler {
 	return handler{s}
 }
 
