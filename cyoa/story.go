@@ -103,15 +103,21 @@ func JsonStory(r io.Reader) (Story, error) {
 	return story, nil
 }
 
-type HandlerOptions func(h *handler)
+type HandlerOption func(h *handler)
 
-func WithTemplate(t *template.Template) HandlerOptions {
+func WithTemplate(t *template.Template) HandlerOption {
 	return func(h *handler) {
 		h.t = t
 	}
 }
 
-func NewHandler(s Story, opts ...HandlerOptions) http.Handler {
+func WithPathFunc(fn func(r *http.Request) string) HandlerOption {
+	return func(h *handler) {
+		h.pathFn = fn
+	}
+}
+
+func NewHandler(s Story, opts ...HandlerOption) http.Handler {
 	h := handler{s, tpl, defaultPathFn}
 	for _, opt := range opts {
 		opt(&h)
