@@ -30,8 +30,12 @@ func main() {
 
 	tpl := template.Must(template.New("").Parse(storyTmpl))
 	h := cyoa.NewHandler(story, cyoa.WithTemplate(tpl), cyoa.WithPathFunc(pathFn))
+
+	mux := http.NewServeMux()
+	mux.Handle("/story", h)
+
 	fmt.Printf("Starting the server on port: %d\n", *port)
-	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), h))
+	log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *port), mux))
 }
 
 func pathFn(r *http.Request) string {
