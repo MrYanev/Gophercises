@@ -9,7 +9,7 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/MrYanev/Gophercises/cyoa"
+	"github.com/MrYanev/Gophercises/Exercise-3/cyoa"
 )
 
 func main() {
