@@ -43,6 +43,20 @@ func buildLink(n *html.Node) Link {
 	return ret
 }
 
+func text(n *html.Node) string {
+	if n.Type == html.TextNode {
+		return n.Data
+	}
+	if n.Type != html.ElementNode {
+		return ""
+	}
+	var ret string
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		ret += text(c) + " "
+	}
+	return ret
+}
+
 func linkNodes(n *html.Node) []*html.Node {
 	if n.Type == html.ElementNode && n.Data == "a" {
 		return []*html.Node{n}
