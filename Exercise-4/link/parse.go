@@ -20,7 +20,10 @@ func Parse(r io.Reader) ([]Link, error) {
 	if err != nil {
 		return nil, err
 	}
-	dfs(doc, "")
+	nodes := linkNodes(doc)
+	for _, node := range nodes {
+		fmt.Println(node)
+	}
 	//1. Find <a> nodes in doc
 	//2. For each link node...
 	//	2a Build a link
@@ -37,15 +40,4 @@ func linkNodes(n *html.Node) []*html.Node {
 		ret = append(ret, linkNodes(c)...)
 	}
 	return ret
-}
-
-func dfs(n *html.Node, padding string) {
-	msg := n.Data
-	if n.Type == html.ElementNode {
-		msg = "<" + msg + ">"
-	}
-	fmt.Println(padding, n.Data)
-	for c := n.FirstChild; c != nil; c = c.NextSibling {
-		dfs(c, padding+"  ")
-	}
 }
