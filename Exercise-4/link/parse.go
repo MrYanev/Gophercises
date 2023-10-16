@@ -2,6 +2,7 @@ package link
 
 import (
 	"io"
+	"strings"
 
 	"golang.org/x/net/html"
 )
@@ -54,7 +55,7 @@ func text(n *html.Node) string {
 	for c := n.FirstChild; c != nil; c = c.NextSibling {
 		ret += text(c) + " "
 	}
-	return ret
+	return strings.Join(strings.Fields(ret), " ")
 }
 
 func linkNodes(n *html.Node) []*html.Node {
