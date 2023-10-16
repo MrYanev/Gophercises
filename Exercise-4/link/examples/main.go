@@ -1,5 +1,12 @@
 package main
 
+import (
+	"fmt"
+	"strings"
+
+	"github.com/MrYanev/Gophercises/Exercise-4/link"
+)
+
 var exampleHtml = `
 <html>
 <body>
@@ -9,5 +16,10 @@ var exampleHtml = `
 </html>`
 
 func main() {
-
+	r := strings.NewReader(exampleHtml)
+	links, err := link.Parse(r)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Printf("%+v\n", links)
 }
