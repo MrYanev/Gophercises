@@ -21,7 +21,22 @@ func Parse(r io.Reader) ([]Link, error) {
 		return nil, err
 	}
 	dfs(doc, "")
+	//1. Find <a> nodes in doc
+	//2. For each link node...
+	//	2a Build a link
+	//3. Return the links
 	return nil, nil
+}
+
+func linkNodes(n *html.Node) []*html.Node {
+	if n.Type == html.ElementNode && n.Data == "a" {
+		return []*html.Node{n}
+	}
+	var ret []*html.Node
+	for c := n.FirstChild; c != nil; c = c.NextSibling {
+		ret = append(ret, linkNodes(c)...)
+	}
+	return ret
 }
 
 func dfs(n *html.Node, padding string) {
