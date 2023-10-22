@@ -33,7 +33,6 @@ func main() {
 	//Setting up the timer for the quiz
 	timer := time.NewTimer(time.Duration(*timeLimit) * time.Second)
 
-	//Loop over the problems and prompt them in the Cmd line
 	correct := 0
 problemloop:
 	for i, p := range problems {
