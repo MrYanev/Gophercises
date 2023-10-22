@@ -15,19 +15,14 @@ type Problem struct {
 }
 
 func main() {
-	//A flag for the csv file
 	csvFileName := flag.String("csv", "problems.csv", "A csv file in question-answer format")
 	flag.Parse()
-	//A flag for the timer duration
 	timeLimit := flag.Int("limit", 30, "The time limit for the quiz in seconds")
-	//Open the csv file
 	file, err := os.Open(*csvFileName)
 	if err != nil {
 		exit(fmt.Sprintf("Couldn't open the file %s\n", *csvFileName))
 	}
-	//Initiate a reader for the file
 	r := csv.NewReader(file)
-	//And read all lines from it
 	lines, err := r.ReadAll()
 	if err != nil {
 		exit("Failed to parse the provide csv")
