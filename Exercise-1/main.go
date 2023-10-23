@@ -44,6 +44,8 @@ problemloop:
 			ansChan <- ans
 		}()
 		select {
+		//A channel to keep track of time and interrup if needed
+
 		case <-timer.C:
 			fmt.Println("\nYou ran out of time")
 			break problemloop
