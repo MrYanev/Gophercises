@@ -38,8 +38,14 @@ func main() {
 		Host:   reqUrl.Host,
 	}
 	base := baseUrl.String()
+	pages := hrefs(resp.Body, base)
+	for _, page := range pages {
+		fmt.Println(page)
+	}
+}
 
-	links, err := link.Parse(resp.Body)
+func hrefs(r io.Reader, base string) []string {
+	links, err := link.Parse(r)
 	if err != nil {
 		fmt.Printf("There is an %s error", err)
 	}
@@ -52,8 +58,5 @@ func main() {
 		case strings.HasPrefix(l.Href, "http"):
 			hrefs = append(hrefs, l.Href)
 		}
-	}
-	for _, href := range hrefs {
-		fmt.Println(href)
 	}
 }
