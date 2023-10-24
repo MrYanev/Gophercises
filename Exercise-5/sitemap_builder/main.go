@@ -6,7 +6,6 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"os"
 	"strings"
 
 	"github.com/MrYanev/Gophercises/Exercise-4/link"
@@ -25,25 +24,31 @@ func main() {
 	flag.Parse()
 
 	fmt.Println(*urlFlag)
-	resp, err := http.Get(*urlFlag)
+	pages := get(*urlFlag)
+	for _, page := range pages {
+		fmt.Println(page)
+	}
+
+}
+
+// A function to get the URLs
+func get(UurlStr string) []string {
+	resp, err := http.Get(UurlStr)
 	if err != nil {
 		panic(err)
 	}
 	defer resp.Body.Close()
-	io.Copy(os.Stdout, resp.Body)
-
 	reqUrl := resp.Request.URL
 	baseUrl := &url.URL{
 		Scheme: reqUrl.Scheme,
 		Host:   reqUrl.Host,
 	}
 	base := baseUrl.String()
-	pages := hrefs(resp.Body, base)
-	for _, page := range pages {
-		fmt.Println(page)
-	}
+	return filter(base, hrefs(resp.Body, base))
 }
 
+// A function to parse the links with the extentions
+// Or use the full http. request
 func hrefs(r io.Reader, base string) []string {
 	links, err := link.Parse(r)
 	if err != nil {
@@ -57,6 +62,17 @@ func hrefs(r io.Reader, base string) []string {
 			ret = append(ret, base+l.Href)
 		case strings.HasPrefix(l.Href, "http"):
 			ret = append(ret, l.Href)
+		}
+	}
+	return ret
+}
+
+// A function to filter out repetative links
+func filter(base string, links []string) []string {
+	var ret []string
+	for _, link := range links {
+		if strings.HasPrefix(link, base) {
+			ret = append(ret, link)
 		}
 	}
 	return ret
