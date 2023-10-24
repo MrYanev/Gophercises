@@ -32,7 +32,7 @@ func main() {
 
 	links, err := link.Parse(resp.Body)
 	if err != nil {
-		fmt.Errorf("There is an %s error", err)
+		fmt.Printf("There is an %s error", err)
 	}
 	for _, l := range links {
 		fmt.Println(l)
