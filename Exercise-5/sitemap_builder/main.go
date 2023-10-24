@@ -44,7 +44,7 @@ func get(UurlStr string) []string {
 		Host:   reqUrl.Host,
 	}
 	base := baseUrl.String()
-	return filter(base, hrefs(resp.Body, base))
+	return filter(hrefs(resp.Body, base), withPrefix(base))
 }
 
 // A function to parse the links with the extentions
@@ -68,12 +68,19 @@ func hrefs(r io.Reader, base string) []string {
 }
 
 // A function to filter out repetative links
-func filter(base string, links []string) []string {
+func filter(links []string, keepFn func(string) bool) []string {
 	var ret []string
 	for _, link := range links {
-		if strings.HasPrefix(link, base) {
+		if keepFn(link) {
 			ret = append(ret, link)
 		}
 	}
 	return ret
+}
+
+// A func to keep the links with prefix
+func withPrefix(pfx string) func(string) bool {
+	return func(link string) bool {
+		return strings.HasPrefix(link, pfx)
+	}
 }
