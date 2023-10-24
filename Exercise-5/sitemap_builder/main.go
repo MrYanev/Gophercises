@@ -3,14 +3,22 @@ package main
 import (
 	"flag"
 	"fmt"
+	"io"
+	"net/http"
+	"os"
 )
 
 func main() {
-	url := flag.String("url", "https://gophercises.com", "the URL to buld the site map for")
+	urlFlag := flag.String("url", "https://gophercises.com", "the URL to buld the site map for")
 	flag.Parse()
 
-	fmt.Println(url)
-
+	fmt.Println(*urlFlag)
+	resp, err := http.Get(*urlFlag)
+	if err != nil {
+		panic(err)
+	}
+	defer resp.Body.Close()
+	io.Copy(os.Stdout, resp.Body)
 	/*
 		1. Get the webpage
 		2. Parse all the links on the page
