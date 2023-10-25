@@ -1,15 +1,25 @@
 package main
 
 import (
+	"encoding/xml"
 	"flag"
 	"fmt"
 	"io"
 	"net/http"
 	"net/url"
+	"os"
 	"strings"
 
 	"github.com/MrYanev/Gophercises/Exercise-4/link"
 )
+
+type loc struct {
+	Value string `xml:"loc"`
+}
+
+type urlset struct {
+	Urls []loc `xml:"url"`
+}
 
 func main() {
 	/*
@@ -25,8 +35,13 @@ func main() {
 	flag.Parse()
 
 	pages := bfs(*urlFlag, *maxDepth)
+	var toXml urlset
 	for _, page := range pages {
-		fmt.Println(page)
+		toXml.Urls = append(toXml.Urls, loc{page})
+	}
+	enc := xml.NewEncoder(os.Stdout)
+	if err := enc.Encode(toXml); err != nil {
+		panic(err)
 	}
 
 }
