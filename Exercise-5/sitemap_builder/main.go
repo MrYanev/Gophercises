@@ -21,6 +21,7 @@ func main() {
 		6. Print out the XML
 	*/
 	urlFlag := flag.String("url", "https://gophercises.com", "the URL to buld the site map for")
+	maxDepth := flag.Int("deoth", 3, "The maximum number of links depth to traverse")
 	flag.Parse()
 
 	fmt.Println(*urlFlag)
@@ -29,6 +30,33 @@ func main() {
 		fmt.Println(page)
 	}
 
+}
+
+//	struct{}{} -> means type empty struct{}
+
+func bfs(urlStr string, maxDepth int) []string {
+	seen := make(map[string]struct{})
+	var q map[string]struct{}
+	nq := map[string]struct{}{
+		urlStr: struct{}{},
+	}
+	for i := 0; i < maxDepth; i++ {
+		q, nq = nq, make(map[string]struct{})
+		for url, _ := range q {
+			if _, ok := seen[url]; ok {
+				continue
+			}
+			seen[url] = struct{}{}
+			for _, link := range get(url) {
+				nq[link] = struct{}{}
+			}
+		}
+	}
+	ret := make([]string, 0, len(seen))
+	for url, _ := range seen {
+		ret = append(ret, url)
+	}
+	return ret
 }
 
 // A function to get the URLs
