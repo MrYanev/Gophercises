@@ -14,12 +14,15 @@ func main() {
 	// 	shifted := int(char) + shift
 	// 	ans += fmt.Sprint(shifted)
 	// }
-	alphabetStr := "abcdefghijklmnopqrstuvwxyz"
-	alphabet := []rune(alphabetStr)
+	alphabetLower := "abcdefghijklmnopqrstuvwxyz"
+	alphabetUpper := "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 	for _, ch := range input {
-		if strings.IndexRune(alphabetStr, ch) >= 0 {
-			ans += string(rotate(ch, shift, alphabet))
-		} else {
+		switch {
+		case strings.IndexRune(alphabetLower, ch) >= 0:
+			ans += string(rotate(ch, shift, []rune(alphabetLower)))
+		case strings.IndexRune(alphabetUpper, ch) >= 0:
+			ans += string(rotate(ch, shift, []rune(alphabetUpper)))
+		default:
 			ans += string(ch)
 		}
 	}
