@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"unicode"
+	"strings"
 )
 
 func CamelCase() {
@@ -10,7 +10,8 @@ func CamelCase() {
 	var input string
 	fmt.Scanf("%s\n", &input)
 	for _, char := range input {
-		if unicode.IsUpper(char) {
+		str := string(char)
+		if strings.ToUpper(str) == str {
 			ans++
 		}
 	}
