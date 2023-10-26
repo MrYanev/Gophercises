@@ -53,13 +53,14 @@ func main() {
 
 }
 
-//	struct{}{} -> means type empty struct{}
+// struct{}{} -> means type empty struct{}
+type empty struct{}
 
 func bfs(urlStr string, maxDepth int) []string {
 	seen := make(map[string]struct{})
 	var q map[string]struct{}
 	nq := map[string]struct{}{
-		urlStr: struct{}{},
+		urlStr: empty{},
 	}
 	for i := 0; i <= maxDepth; i++ {
 		q, nq = nq, make(map[string]struct{})
@@ -70,10 +71,10 @@ func bfs(urlStr string, maxDepth int) []string {
 			if _, ok := seen[url]; ok {
 				continue
 			}
-			seen[url] = struct{}{}
+			seen[url] = empty{}
 			for _, link := range get(url) {
 				if _, ok := seen[link]; !ok {
-					nq[link] = struct{}{}
+					nq[link] = empty{}
 				}
 			}
 		}
