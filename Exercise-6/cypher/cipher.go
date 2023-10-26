@@ -5,8 +5,8 @@ import "fmt"
 func main() {
 	var shift int
 	var input, ans string
-	fmt.Scan("%s\n", &input)
-	fmt.Scan("%v\n", &shift)
+	fmt.Scanf("%s\n", &input)
+	fmt.Scanf("%v\n", &shift)
 	for _, char := range input {
 		shifted := int(char) + shift
 		ans += fmt.Sprint(shifted)
