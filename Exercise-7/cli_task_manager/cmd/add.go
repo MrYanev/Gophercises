@@ -13,3 +13,7 @@ var addCmd = &cobra.Command{
 		fmt.Println("Added")
 	},
 }
+
+func init() {
+	RootCmd.AddCommand(addCmd)
+}
