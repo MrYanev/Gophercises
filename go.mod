@@ -5,6 +5,7 @@ go 1.20
 require (
 	github.com/boltdb/bolt v1.3.1
 	github.com/gophercises/urlshort v0.0.0-20190723121003-cc800dbaf411
+	github.com/mitchellh/go-homedir v1.1.0
 	github.com/spf13/cobra v1.7.0
 	golang.org/x/net v0.17.0
 	gopkg.in/yaml.v3 v3.0.1
