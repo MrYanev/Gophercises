@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"os"
 	"path/filepath"
 
 	"github.com/MrYanev/Gophercises/Exercise-7/cli_task_manager/cmd"
@@ -11,9 +13,13 @@ import (
 func main() {
 	home, _ := homedir.Dir()
 	dbPath := filepath.Join(home, "tasks.db")
-	err := db.Init(dbPath)
+	must(db.Init(dbPath))
+	must(cmd.RootCmd.Execute())
+}
+
+func must(err error) {
 	if err != nil {
-		panic(err)
+		fmt.Println(err.Error())
+		os.Exit(1)
 	}
-	cmd.RootCmd.Execute()
 }
