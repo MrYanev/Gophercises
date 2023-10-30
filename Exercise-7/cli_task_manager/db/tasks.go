@@ -42,14 +42,11 @@ func CreateTask(task string) (int, error) {
 	return id, nil
 }
 
-func itob(v int) []byte {
-	b := make([]byte, 8)
-	binary.BigEndian.PutUint64(b, uint64(v))
-	return b
-}
-
-func btoi(b []byte) int {
-	return int(binary.BigEndian.Uint64(b))
+func DeleteTask(key int) error {
+	return db.Update(func(tx *bolt.Tx) error {
+		b := tx.Bucket(taskBucket)
+		return b.Delete(itob(key))
+	})
 }
 
 func AllTasks() ([]Task, error) {
@@ -69,4 +66,14 @@ func AllTasks() ([]Task, error) {
 		return nil, err
 	}
 	return tasks, nil
+}
+
+func itob(v int) []byte {
+	b := make([]byte, 8)
+	binary.BigEndian.PutUint64(b, uint64(v))
+	return b
+}
+
+func btoi(b []byte) int {
+	return int(binary.BigEndian.Uint64(b))
 }
