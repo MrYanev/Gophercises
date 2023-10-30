@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/MrYanev/Gophercises/Exercise-7/cli_task_manager/db"
 	"github.com/spf13/cobra"
 )
 
@@ -18,6 +19,17 @@ var doCmd = &cobra.Command{
 				fmt.Println("Failed to parse the argument:", arg)
 			} else {
 				ids = append(ids, id)
+			}
+		}
+		tasks, err := db.AllTasks()
+		if err != nil {
+			fmt.Println("Something went wrong", err)
+			return
+		}
+		for _, id := range ids {
+			if id <= 0 || id > len(tasks) {
+				fmt.Println("Invalid task number")
+				continue
 			}
 		}
 		fmt.Println(ids)
