@@ -31,8 +31,14 @@ var doCmd = &cobra.Command{
 				fmt.Println("Invalid task number")
 				continue
 			}
+			task := tasks[id-1]
+			err := db.DeleteTask(task.Key)
+			if err != nil {
+				fmt.Printf("Failed to mark \"%d\" as completed. Error: %s\n", id, err)
+			} else {
+				fmt.Printf("Marked \"%d\" as completed. \n", id)
+			}
 		}
-		fmt.Println(ids)
 	},
 }
 
