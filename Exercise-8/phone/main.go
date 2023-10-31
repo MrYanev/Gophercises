@@ -19,14 +19,21 @@ const (
 func main() {
 	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s password=%s sslmode=disable", host, port, user, password)
 	db, err := sql.Open("postgres", psqlInfo)
-	if err != nil {
-		panic(err)
-	}
+	must(err)
 	err = resetDB(db, dbname)
+	must(err)
+	db.Close()
+
+	psqlInfo = fmt.Sprintf("%s dbname=%s", psqlInfo, dbname)
+	db, err = sql.Open("postgres", psqlInfo)
+	must(err)
+	defer db.Close()
+}
+
+func must(err error) {
 	if err != nil {
 		panic(err)
 	}
-	db.Close()
 }
 
 func resetDB(db *sql.DB, name string) error {
