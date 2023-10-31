@@ -18,14 +18,14 @@ const (
 
 func main() {
 	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s password=%s sslmode=disable", host, port, user, password)
-	db, err := sql.Open("postgres", psqlInfo)
-	must(err)
-	err = resetDB(db, dbname)
-	must(err)
-	db.Close()
+	// db, err := sql.Open("postgres", psqlInfo)
+	// must(err)
+	// err = resetDB(db, dbname)
+	// must(err)
+	// db.Close()
 
 	psqlInfo = fmt.Sprintf("%s dbname=%s", psqlInfo, dbname)
-	db, err = sql.Open("postgres", psqlInfo)
+	db, err := sql.Open("postgres", psqlInfo)
 	must(err)
 	defer db.Close()
 
@@ -34,6 +34,19 @@ func main() {
 	id, err := insertPhone(db, "1234567890")
 	must(err)
 	fmt.Println("id=", id)
+
+	number, err := getPhone(db, id)
+	must(err)
+	fmt.Println("Number is ...", number)
+}
+
+func getPhone(db *sql.DB, id int) (string, error) {
+	var number string
+	err := db.QueryRow("SELECT * FROM phone_numbers WHERE id=$1", id).Scan(&id, &number)
+	if err != nil {
+		return "", err
+	}
+	return number, nil
 }
 
 func insertPhone(db *sql.DB, phone string) (int, error) {
