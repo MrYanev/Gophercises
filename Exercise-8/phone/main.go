@@ -31,21 +31,19 @@ func main() {
 
 	must(db.Ping())
 	must(createPNTable(db))
-	_, err = insertPhone(db, "1234567890")
+	id, err := insertPhone(db, "1234567890")
 	must(err)
+	fmt.Println("id=", id)
 }
 
 func insertPhone(db *sql.DB, phone string) (int, error) {
 	statement := `INSERT INTO phone_numbers(value) VALUES($1)`
-	result, err := db.Exec(statement, phone)
+	var id int
+	err := db.QueryRow(statement, phone).Scan(&id)
 	if err != nil {
 		return -1, err
 	}
-	id, err := result.LastInsertId()
-	if err != nil {
-		return -1, err
-	}
-	return int(id), nil
+	return id, nil
 }
 
 func createPNTable(db *sql.DB) error {
