@@ -1,6 +1,10 @@
 package main
 
-import "bytes"
+import (
+	"bytes"
+
+	_ "github.com/lib/pq"
+)
 
 func main() {
 
