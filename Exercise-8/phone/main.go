@@ -2,12 +2,47 @@ package main
 
 import (
 	"bytes"
+	"database/sql"
+	"fmt"
 
 	_ "github.com/lib/pq"
 )
 
-func main() {
+const (
+	host     = "localhost"
+	port     = 8080
+	user     = ""
+	password = ""
+	dbname   = "phonercise"
+)
 
+func main() {
+	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s password=%s sslmode=disable", host, port, user, password)
+	db, err := sql.Open("postgres", psqlInfo)
+	if err != nil {
+		panic(err)
+	}
+	err = resetDB(db, dbname)
+	if err != nil {
+		panic(err)
+	}
+	db.Close()
+}
+
+func resetDB(db *sql.DB, name string) error {
+	_, err := db.Exec("DROP DATABASE IF EXISTS " + name)
+	if err != nil {
+		return err
+	}
+	return createDB(db, name)
+}
+
+func createDB(db *sql.DB, name string) error {
+	_, err := db.Exec("CREATE DATABASE " + name) //Has a sql injection flow don't use
+	if err != nil {
+		return err
+	}
+	return nil
 }
 
 func normalize(phone string) string {
