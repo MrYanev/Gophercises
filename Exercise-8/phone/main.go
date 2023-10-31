@@ -28,6 +28,8 @@ func main() {
 	db, err = sql.Open("postgres", psqlInfo)
 	must(err)
 	defer db.Close()
+
+	must(db.Ping())
 }
 
 func must(err error) {
