@@ -20,43 +20,46 @@ const (
 func main() {
 	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s password=%s sslmode=disable", host, port, user, password)
 	must(db.Reset("postgres", psqlInfo, dbname))
-	psqlInfo = fmt.Sprintf("%s dbname=%s", psqlInfo, dbname)
 
+	psqlInfo = fmt.Sprintf("%s dbname=%s", psqlInfo, dbname)
 	must(phonedb.Migrate("postgres", psqlInfo))
 
 	db, err := sql.Open("postgres", psqlInfo)
 	must(err)
 	defer db.Close()
 
-	must(db.Ping())
-	must(createPNTable(db))
-	id, err := insertPhone(db, "1234567890")
+	err = db.Seed()
 	must(err)
-	fmt.Println("id=", id)
+	// must(db.Ping())
+	// must(createPNTable(db))
+	// id, err := insertPhone(db, "1234567890")
+	// must(err)
+	// fmt.Println("id=", id)
 
-	number, err := getPhone(db, id)
-	must(err)
-	fmt.Println("Number is ...", number)
+	// db, err := phonedb.Open("postgres")
+	// number, err := getPhone(db, id)
+	// must(err)
+	// fmt.Println("Number is ...", number)
 
-	phones, err := getAllPhones(db)
-	must(err)
-	for _, p := range phones {
-		fmt.Printf("%+v\n", p)
-		number := normalize(p.number)
-		if number != p.number {
-			fmt.Println("Updating or removing...", number)
-			existing, err := findPhone(db, number)
-			must(err)
-			if existing != nil {
-				must(deletePhone(db, id))
-			} else {
-				p.number = number
-				must(updatePhone(db, p))
-			}
-		} else {
-			fmt.Println("No changes required")
-		}
-	}
+	// phones, err := getAllPhones(db)
+	// must(err)
+	// for _, p := range phones {
+	// 	fmt.Printf("%+v\n", p)
+	// 	number := normalize(p.number)
+	// 	if number != p.number {
+	// 		fmt.Println("Updating or removing...", number)
+	// 		existing, err := findPhone(db, number)
+	// 		must(err)
+	// 		if existing != nil {
+	// 			must(deletePhone(db, id))
+	// 		} else {
+	// 			p.number = number
+	// 			must(updatePhone(db, p))
+	// 		}
+	// 	} else {
+	// 		fmt.Println("No changes required")
+	// 	}
+	// }
 }
 
 func getPhone(db *sql.DB, id int) (string, error) {
@@ -116,16 +119,6 @@ func getAllPhones(db *sql.DB) ([]phone, error) {
 		return nil, err
 	}
 	return ret, nil
-}
-
-func insertPhone(db *sql.DB, phone string) (int, error) {
-	statement := `INSERT INTO phone_numbers(value) VALUES($1)`
-	var id int
-	err := db.QueryRow(statement, phone).Scan(&id)
-	if err != nil {
-		return -1, err
-	}
-	return id, nil
 }
 
 func must(err error) {

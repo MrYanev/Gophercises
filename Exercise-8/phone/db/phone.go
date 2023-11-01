@@ -30,6 +30,22 @@ func createDB(db *sql.DB, name string) error {
 	return nil
 }
 
+func Open(driverName, dataSource string) (*DB, error) {
+	db, err := sql.Open(driverName, dataSource)
+	if err != nil {
+		return nil, err
+	}
+	return &DB{db}, nil
+}
+
+type DB struct {
+	db *sql.DB
+}
+
+func (db *DB) Close() error {
+	return db.db.Close()
+}
+
 func Migrate(driverName, dataSource string) error {
 	db, err := sql.Open(driverName, dataSource)
 	if err != nil {
@@ -42,6 +58,16 @@ func Migrate(driverName, dataSource string) error {
 	return db.Close()
 }
 
+func insertPhone(db *sql.DB, phone string) (int, error) {
+	statement := `INSERT INTO phone_numbers(value) VALUES($1)`
+	var id int
+	err := db.QueryRow(statement, phone).Scan(&id)
+	if err != nil {
+		return -1, err
+	}
+	return id, nil
+}
+
 func createPNTable(db *sql.DB) error {
 	statement := `
 	CREATE TABLE IF NOT EXISTS phone_numbers (
@@ -50,4 +76,23 @@ func createPNTable(db *sql.DB) error {
 	)`
 	_, err := db.Exec(statement)
 	return err
+}
+
+func (db *DB) Seed() error {
+	data := []string{
+		"1234567890",
+		"123 456 7891",
+		"(123) 456 7892",
+		"(123) 456-7893",
+		"123-456-7894",
+		"123-456-7890",
+		"1234567892",
+		"(123)456-7892",
+	}
+	for _, number := range data {
+		if _, err := insertPhone(db.db, number); err != nil {
+			return err
+		}
+	}
+	return nil
 }
