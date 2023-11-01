@@ -49,9 +49,10 @@ func main() {
 			existing, err := findPhone(db, number)
 			must(err)
 			if existing != nil {
-				//delete number
+				must(deletePhone(db, id))
 			} else {
-				//update the number
+				p.number = number
+				must(updatePhone(db, p))
 			}
 		} else {
 			fmt.Println("No changes required")
@@ -79,6 +80,18 @@ func findPhone(db *sql.DB, number string) (*phone, error) {
 		}
 	}
 	return &p, nil
+}
+
+func updatePhone(db *sql.DB, p phone) error {
+	statement := `UPDATE phone_numbers SET value=$2 WHERE id=$1`
+	_, err := db.Exec(statement, p.id, p.number)
+	return err
+}
+
+func deletePhone(db *sql.DB, id int) error {
+	statement := `DELETE phone_numbers WHERE id=$1`
+	_, err := db.Exec(statement, id)
+	return err
 }
 
 type phone struct {
