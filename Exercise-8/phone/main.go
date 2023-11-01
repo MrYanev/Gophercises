@@ -89,7 +89,7 @@ func updatePhone(db *sql.DB, p phone) error {
 }
 
 func deletePhone(db *sql.DB, id int) error {
-	statement := `DELETE phone_numbers WHERE id=$1`
+	statement := `DELETE FROM phone_numbers WHERE id=$1`
 	_, err := db.Exec(statement, id)
 	return err
 }
