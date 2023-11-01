@@ -46,6 +46,13 @@ func main() {
 		number := normalize(p.number)
 		if number != p.number {
 			fmt.Println("Updating or removing...", number)
+			existing, err := findPhone(db, number)
+			must(err)
+			if existing != nil {
+				//delete number
+			} else {
+				//update the number
+			}
 		} else {
 			fmt.Println("No changes required")
 		}
@@ -59,6 +66,19 @@ func getPhone(db *sql.DB, id int) (string, error) {
 		return "", err
 	}
 	return number, nil
+}
+
+func findPhone(db *sql.DB, number string) (*phone, error) {
+	var p phone
+	err := db.QueryRow("SELECT * FROM phone_numbers WHERE id=$1", number).Scan(&p.id, &p.number)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		} else {
+			return nil, err
+		}
+	}
+	return &p, nil
 }
 
 type phone struct {
