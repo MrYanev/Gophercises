@@ -43,6 +43,12 @@ func main() {
 	must(err)
 	for _, p := range phones {
 		fmt.Printf("%+v\n", p)
+		number := normalize(p.number)
+		if number != p.number {
+			fmt.Println("Updating or removing...", number)
+		} else {
+			fmt.Println("No changes required")
+		}
 	}
 }
 
