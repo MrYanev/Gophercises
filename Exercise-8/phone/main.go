@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"fmt"
 
+	"github.com/MrYanev/Gophercises/Exercise-8/phone/db"
 	_ "github.com/lib/pq"
 )
 
@@ -18,13 +19,11 @@ const (
 
 func main() {
 	psqlInfo := fmt.Sprintf("host=%s port=%s user=%s password=%s sslmode=disable", host, port, user, password)
-	// db, err := sql.Open("postgres", psqlInfo)
-	// must(err)
-	// err = resetDB(db, dbname)
-	// must(err)
-	// db.Close()
-
+	must(db.Reset("postgres", psqlInfo, dbname))
 	psqlInfo = fmt.Sprintf("%s dbname=%s", psqlInfo, dbname)
+
+	must(phonedb.Migrate("postgres", psqlInfo))
+
 	db, err := sql.Open("postgres", psqlInfo)
 	must(err)
 	defer db.Close()
@@ -129,36 +128,10 @@ func insertPhone(db *sql.DB, phone string) (int, error) {
 	return id, nil
 }
 
-func createPNTable(db *sql.DB) error {
-	statement := `
-	CREATE TABLE IF NOT EXISTS phone_numbers (
-		id SERIAL,
-		value VARCHAR(255),
-	)`
-	_, err := db.Exec(statement)
-	return err
-}
-
 func must(err error) {
 	if err != nil {
 		panic(err)
 	}
-}
-
-func resetDB(db *sql.DB, name string) error {
-	_, err := db.Exec("DROP DATABASE IF EXISTS " + name)
-	if err != nil {
-		return err
-	}
-	return createDB(db, name)
-}
-
-func createDB(db *sql.DB, name string) error {
-	_, err := db.Exec("CREATE DATABASE " + name) //Has a sql injection flow don't use
-	if err != nil {
-		return err
-	}
-	return nil
 }
 
 func normalize(phone string) string {
