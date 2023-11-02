@@ -152,3 +152,28 @@ func getAllPhones(db *sql.DB) ([]Phone, error) {
 	}
 	return ret, nil
 }
+
+func (db *DB) FindPhone(number string) (*Phone, error) {
+	var p Phone
+	err := db.db.QueryRow("SELECT * FROM phone_numbers WHERE id=$1", number).Scan(&p.ID, &p.Number)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		} else {
+			return nil, err
+		}
+	}
+	return &p, nil
+}
+
+func (db *DB) UpdatePhone(p *Phone) error {
+	statement := `UPDATE phone_numbers SET value=$2 WHERE id=$1`
+	_, err := db.db.Exec(statement, p.ID, p.Number)
+	return err
+}
+
+func (db *DB) DeletePhone(id int) error {
+	statement := `DELETE FROM phone_numbers WHERE id=$1`
+	_, err := db.db.Exec(statement, id)
+	return err
+}
