@@ -62,15 +62,6 @@ func main() {
 	// }
 }
 
-func getPhone(db *sql.DB, id int) (string, error) {
-	var number string
-	err := db.QueryRow("SELECT * FROM phone_numbers WHERE id=$1", id).Scan(&id, &number)
-	if err != nil {
-		return "", err
-	}
-	return number, nil
-}
-
 func findPhone(db *sql.DB, number string) (*phone, error) {
 	var p phone
 	err := db.QueryRow("SELECT * FROM phone_numbers WHERE id=$1", number).Scan(&p.id, &p.number)
