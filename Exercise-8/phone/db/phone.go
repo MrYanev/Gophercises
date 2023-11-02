@@ -107,21 +107,42 @@ func getPhone(db *sql.DB, id int) (string, error) {
 	return number, nil
 }
 
-type phone struct {
-	id     int
-	number string
+//Represents the phone_numbers table
+type Phone struct {
+	ID     int
+	Number string
 }
 
-func getAllPhones(db *sql.DB) ([]phone, error) {
+func (db *DB) AllPhones() ([]Phone, error) {
+	rows, err := db.db.Query("SELECT id, value FROM phone_numbers")
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+	var ret []Phone
+	for rows.Next() {
+		var p Phone
+		if err := rows.Scan(&p.ID, &p.Number); err != nil {
+			return nil, err
+		}
+		ret = append(ret, p)
+	}
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+	return ret, nil
+}
+
+func getAllPhones(db *sql.DB) ([]Phone, error) {
 	rows, err := db.Query("SELECT id, value FROM phone_numbers")
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
-	var ret []phone
+	var ret []Phone
 	for rows.Next() {
-		var p phone
-		if err := rows.Scan(&p.id, &p.number); err != nil {
+		var p Phone
+		if err := rows.Scan(&p.ID, &p.Number); err != nil {
 			return nil, err
 		}
 		ret = append(ret, p)
