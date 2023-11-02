@@ -1,6 +1,10 @@
 package db
 
-import "database/sql"
+import (
+	"database/sql"
+
+	_ "github.com/lib/pq"
+)
 
 func Reset(driverName, dataSource, dbName string) error {
 	db, err := sql.Open(driverName, dataSource)
@@ -97,7 +101,7 @@ func (db *DB) Seed() error {
 	return nil
 }
 
-//Not being used yet
+// Not being used yet
 func getPhone(db *sql.DB, id int) (string, error) {
 	var number string
 	err := db.QueryRow("SELECT * FROM phone_numbers WHERE id=$1", id).Scan(&id, &number)
@@ -107,7 +111,7 @@ func getPhone(db *sql.DB, id int) (string, error) {
 	return number, nil
 }
 
-//Represents the phone_numbers table
+// Represents the phone_numbers table
 type Phone struct {
 	ID     int
 	Number string
