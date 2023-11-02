@@ -96,3 +96,13 @@ func (db *DB) Seed() error {
 	}
 	return nil
 }
+
+//Not being used yet
+func getPhone(db *sql.DB, id int) (string, error) {
+	var number string
+	err := db.QueryRow("SELECT * FROM phone_numbers WHERE id=$1", id).Scan(&id, &number)
+	if err != nil {
+		return "", err
+	}
+	return number, nil
+}
