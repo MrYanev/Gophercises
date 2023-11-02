@@ -30,40 +30,45 @@ func main() {
 
 	err = db.Seed()
 	must(err)
-	// must(db.Ping())
-	// must(createPNTable(db))
-	// id, err := insertPhone(db, "1234567890")
-	// must(err)
-	// fmt.Println("id=", id)
 
-	// db, err := phonedb.Open("postgres")
-	// number, err := getPhone(db, id)
-	// must(err)
-	// fmt.Println("Number is ...", number)
-
-	// phones, err := getAllPhones(db)
-	// must(err)
-	// for _, p := range phones {
-	// 	fmt.Printf("%+v\n", p)
-	// 	number := normalize(p.number)
-	// 	if number != p.number {
-	// 		fmt.Println("Updating or removing...", number)
-	// 		existing, err := findPhone(db, number)
-	// 		must(err)
-	// 		if existing != nil {
-	// 			must(deletePhone(db, id))
-	// 		} else {
-	// 			p.number = number
-	// 			must(updatePhone(db, p))
-	// 		}
-	// 	} else {
-	// 		fmt.Println("No changes required")
-	// 	}
-	// }
+	phones, err := db.AllPhones()
+	must(err)
+	for _, P := range phones {
+		fmt.Printf("%+v\n", p)
+		number := normalize(p.Number)
+		if number != p.Number {
+			fmt.Println("Updating or removing...", number)
+			// 	existing, err := findPhone(db, number)
+			// 	must(err)
+			// 	if existing != nil {
+			// 		must(deletePhone(db, id))
+			// 	} else {
+			// 		p.number = number
+			// 		must(updatePhone(db, p))
+			// 	}
+		} else {
+			fmt.Println("No changes required")
+		}
+	}
 }
 
-func findPhone(db *sql.DB, number string) (*phone, error) {
-	var p phone
+// must(db.Ping())
+// must(createPNTable(db))
+// id, err := insertPhone(db, "1234567890")
+// must(err)
+// fmt.Println("id=", id)
+
+// db, err := phonedb.Open("postgres")
+// number, err := getPhone(db, id)
+// must(err)
+// fmt.Println("Number is ...", number)
+
+// phones, err := getAllPhones(db)
+// must(err)
+// for _, p := range phones {
+
+func findPhone(db *sql.DB, number string) (*db.Phone, error) {
+	var p db.Phone
 	err := db.QueryRow("SELECT * FROM phone_numbers WHERE id=$1", number).Scan(&p.id, &p.number)
 	if err != nil {
 		if err == sql.ErrNoRows {
