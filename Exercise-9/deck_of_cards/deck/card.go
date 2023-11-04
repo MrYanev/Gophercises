@@ -64,14 +64,21 @@ func (c Card) Shuffle([]Card) ([]Card, error) {
 }
 
 // A function to generate new deck of cards
-func NewDeck() []Card {
+func NewDeck(opts ...func([]Card) []Card) []Card {
 	var cards []Card
 	for _, suit := range suits {
 		for rank := minRank; rank <= maxRank; rank++ {
 			cards = append(cards, Card{Suit: suit, Rank: rank})
 		}
 	}
+	for _, opt := range opts {
+		cards = opt(cards)
+	}
 	return cards
+}
+
+func absRank(c Card) int {
+	return int(c.Suit)*int(maxRank) + int(c.Rank)
 }
 
 // A function to remove specific type of cards
