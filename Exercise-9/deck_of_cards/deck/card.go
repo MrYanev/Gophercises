@@ -106,3 +106,10 @@ func (c Card) SortOut(deck []Card, suit string) ([]Card, error) {
 func (c Card) MultiDeck(count int) []Card {
 	return nil
 }
+
+func Sort(less func(cards []Card) func(i, j int) bool) func([]Card) []Card {
+	return func(cards []Card) []Card {
+		sort.Slice(cards, less(cards))
+		return cards
+	}
+}
