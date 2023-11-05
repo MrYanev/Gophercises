@@ -89,6 +89,13 @@ func DefaultSort(cards []Card) []Card {
 	return cards
 }
 
+func Sort(less func(cards []Card) func(i, j int) bool) func([]Card) []Card {
+	return func(cards []Card) []Card {
+		sort.Slice(cards, less(cards))
+		return cards
+	}
+}
+
 // A function to check whether a value at index is less than
 // a value at another index
 func Less(cards []Card) func(i, j int) bool {
@@ -105,11 +112,4 @@ func (c Card) SortOut(deck []Card, suit string) ([]Card, error) {
 // A function to build deck from multiple decks
 func (c Card) MultiDeck(count int) []Card {
 	return nil
-}
-
-func Sort(less func(cards []Card) func(i, j int) bool) func([]Card) []Card {
-	return func(cards []Card) []Card {
-		sort.Slice(cards, less(cards))
-		return cards
-	}
 }
