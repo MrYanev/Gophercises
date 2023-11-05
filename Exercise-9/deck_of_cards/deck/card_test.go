@@ -16,3 +16,16 @@ func TestDefaultSort(t *testing.T) {
 		t.Error("Expected Ace of Spades, received card:", cards[0])
 	}
 }
+
+func TestJoker(t *testing.T) {
+	cards := NewDeck(Jokers(3))
+	count := 0
+	for _, c := range cards {
+		if c.Suit == Joker {
+			count++
+		}
+	}
+	if count != 3 {
+		t.Error("Expected 3 Jokers, received:", count)
+	}
+}
