@@ -112,11 +112,6 @@ func Less(cards []Card) func(i, j int) bool {
 	}
 }
 
-// A function to remove specific type of cards
-func (c Card) SortOut(deck []Card, suit string) ([]Card, error) {
-	return nil, nil
-}
-
 // A function to build deck from multiple decks
 func (c Card) MultiDeck(count int) []Card {
 	return nil
@@ -132,5 +127,18 @@ func Jokers(n int) func([]Card) []Card {
 			})
 		}
 		return cards
+	}
+}
+
+// A function to filter out specific cards
+func Filter(f func(card Card) bool) func([]Card) []Card {
+	return func(cards []Card) []Card {
+		var ret []Card
+		for _, c := range cards {
+			if !f(c) {
+				ret = append(ret, c)
+			}
+		}
+		return ret
 	}
 }
