@@ -121,3 +121,16 @@ func (c Card) SortOut(deck []Card, suit string) ([]Card, error) {
 func (c Card) MultiDeck(count int) []Card {
 	return nil
 }
+
+// A function to add set number of Jokers to the deck
+func Jokers(n int) func([]Card) []Card {
+	return func(cards []Card) []Card {
+		for i := 0; i < n; i++ {
+			cards = append(cards, Card{
+				Rank: Rank(i),
+				Suit: Joker,
+			})
+		}
+		return cards
+	}
+}
