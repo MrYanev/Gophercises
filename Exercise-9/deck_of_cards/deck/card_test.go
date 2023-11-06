@@ -41,3 +41,10 @@ func TestFileter(t *testing.T) {
 		}
 	}
 }
+
+func TestDeck(t *testing.T) {
+	cards := NewDeck(Deck(3))
+	if len(cards) != 13*4*3 {
+		t.Errorf("Expected %d cards, received %d", 13*4*3, len(cards))
+	}
+}
