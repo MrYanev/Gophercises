@@ -48,14 +48,6 @@ type Card struct {
 	Rank
 }
 
-func (r Rank) String() string {
-	return ""
-}
-
-func (s Suit) String() string {
-	return ""
-}
-
 func (c Card) String() string {
 	if c.Suit == Joker {
 		return c.Suit.String()
@@ -64,7 +56,7 @@ func (c Card) String() string {
 }
 
 // A function to Shuffle the deck
-func (c Card) Shuffle(cards []Card) []Card {
+func Shuffle(cards []Card) []Card {
 	ret := make([]Card, len(cards))
 	r := rand.New(rand.NewSource(time.Now().Unix()))
 	perm := r.Perm(len(cards))
