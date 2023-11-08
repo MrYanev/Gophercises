@@ -61,8 +61,8 @@ func main() {
 		}
 	}
 	fmt.Println("==FINAL HANDS==")
-	fmt.Println("Player: ", player)
-	fmt.Println("Dealer: ", dealer)
+	fmt.Println("Player: ", player, "\nScore:", player.MinScore())
+	fmt.Println("Dealer: ", dealer, "\nScore:", dealer.MinScore())
 }
 
 func draw(cards []deck.Card) (deck.Card, []deck.Card) {
