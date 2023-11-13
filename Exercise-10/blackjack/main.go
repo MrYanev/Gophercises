@@ -77,6 +77,18 @@ func main() {
 	fmt.Println("==FINAL HANDS==")
 	fmt.Println("Player: ", player, "\nScore:", pScore)
 	fmt.Println("Dealer: ", dealer, "\nScore:", dScore)
+	switch {
+	case pScore > 21:
+		fmt.Println("You BUSTED!")
+	case dScore > 21:
+		fmt.Println("Dealer BUSTED!")
+	case pScore > dScore:
+		fmt.Println("Player WINS!")
+	case dScore > pScore:
+		fmt.Printf("Dealer WINS!")
+	case dScore == pScore:
+		fmt.Println("Draw!")
+	}
 }
 func draw(cards []deck.Card) (deck.Card, []deck.Card) {
 	return cards[0], cards[1:]
