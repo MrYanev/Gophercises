@@ -13,8 +13,8 @@ const (
 	Spade Suit = iota
 	Diamond
 	Club
-	Joker
 	Heart
+	Joker
 )
 
 type Rank uint8
