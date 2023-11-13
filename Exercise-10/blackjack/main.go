@@ -99,17 +99,33 @@ func draw(cards []deck.Card) (deck.Card, []deck.Card) {
 	return cards[0], cards[1:]
 }
 
+type State int8
+
+const (
+	StatePlayerTurn State = iota
+	StateDealerTurn
+	StateHandOver
+)
+
 type GameState struct {
 	Deck   []deck.Card
-	Turn   int
+	State  State
 	Player Hand
 	Dealer Hand
+}
+
+func (gs *GameState) CurrentPlayer() *Hand {
+	switch gs.State {
+
+	default:
+		panic("No one's turn")
+	}
 }
 
 func clone(gs GameState) GameState {
 	ret := GameState{
 		Deck:   make([]deck.Card, len(gs.Deck)),
-		Turn:   gs.Turn,
+		State:  gs.State,
 		Player: make(Hand, len(gs.Player)),
 		Dealer: make(Hand, len(gs.Dealer)),
 	}
