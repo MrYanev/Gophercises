@@ -73,11 +73,11 @@ func main() {
 			fmt.Println("That's not a valid option!")
 		}
 	}
+	pScore, dScore := player.Score(), dealer.Score()
 	fmt.Println("==FINAL HANDS==")
-	fmt.Println("Player: ", player, "\nScore:", player.Score())
-	fmt.Println("Dealer: ", dealer, "\nScore:", dealer.Score())
+	fmt.Println("Player: ", player, "\nScore:", pScore)
+	fmt.Println("Dealer: ", dealer, "\nScore:", dScore)
 }
-
 func draw(cards []deck.Card) (deck.Card, []deck.Card) {
 	return cards[0], cards[1:]
 }
