@@ -116,7 +116,10 @@ type GameState struct {
 
 func (gs *GameState) CurrentPlayer() *Hand {
 	switch gs.State {
-
+	case StatePlayerTurn:
+		return &gs.Player
+	case StateDealerTurn:
+		return &gs.Dealer
 	default:
 		panic("No one's turn")
 	}
