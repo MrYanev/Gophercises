@@ -137,5 +137,3 @@ func clone(gs GameState) GameState {
 	copy(ret.Dealer, gs.Dealer)
 	return ret
 }
-
-//add
