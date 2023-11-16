@@ -55,11 +55,24 @@ func Shuffle(gs GameState) GameState {
 	return ret
 }
 
+func Deal(gs GameState) GameState {
+	ret := clone(gs)
+	ret.Player = make(Hand, 0, 5)
+	ret.Dealer = make(Hand, 0, 5)
+	var card deck.Card
+	for i := 0; i < 2; i++ {
+		card, ret.Deck = draw(ret.Deck)
+		ret.Player = append(ret.Player, card)
+		card, ret.Deck = draw(ret.Deck)
+		ret.Dealer = append(ret.Dealer, card)
+	}
+	ret.State = StatePlayerTurn
+	return ret
+}
+
 func main() {
 	var gs GameState
-	cards := deck.NewDeck(deck.Deck(3), deck.Shuffle)
-	var gs GameState
-	gs.Deck = deck.NewDeck(deck.Deck(3), deck.Shuffle)
+	gs = Shuffle(gs)
 	var card deck.Card
 	var player, dealer Hand
 	for i := 0; i < 2; i++ {
