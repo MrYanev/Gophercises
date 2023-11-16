@@ -140,6 +140,7 @@ func main() {
 			gs = Stand(gs)
 		}
 	}
+	gs = EndHand(gs)
 }
 func draw(cards []deck.Card) (deck.Card, []deck.Card) {
 	return cards[0], cards[1:]
