@@ -88,6 +88,30 @@ func Stand(gs GameState) GameState {
 	return ret
 }
 
+func EndHand(gs GameState) GameState {
+	ret := clone(gs)
+	pScore, dScore := ret.Player.Score(), ret.Dealer.Score()
+	fmt.Println("==FINAL HANDS==")
+	fmt.Println("Player: ", ret.Player, "\nScore:", pScore)
+	fmt.Println("Dealer: ", ret.Dealer, "\nScore:", dScore)
+	switch {
+	case pScore > 21:
+		fmt.Println("You BUSTED!")
+	case dScore > 21:
+		fmt.Println("Dealer BUSTED!")
+	case pScore > dScore:
+		fmt.Println("Player WINS!")
+	case dScore > pScore:
+		fmt.Printf("Dealer WINS!")
+	case dScore == pScore:
+		fmt.Println("Draw!")
+	}
+	fmt.Println()
+	ret.Player = nil
+	ret.Dealer = nil
+	return ret
+}
+
 func main() {
 	var gs GameState
 	gs = Shuffle(gs)
@@ -108,25 +132,13 @@ func main() {
 			fmt.Println("That's not a valid option!")
 		}
 	}
-	for dealer.Score() <= 16 || (dealer.Score() == 17 && dealer.MinScore() != 17) {
-		card, cards = draw(cards)
-		dealer = append(dealer, card)
-	}
-	pScore, dScore := player.Score(), dealer.Score()
-	fmt.Println("==FINAL HANDS==")
-	fmt.Println("Player: ", player, "\nScore:", pScore)
-	fmt.Println("Dealer: ", dealer, "\nScore:", dScore)
-	switch {
-	case pScore > 21:
-		fmt.Println("You BUSTED!")
-	case dScore > 21:
-		fmt.Println("Dealer BUSTED!")
-	case pScore > dScore:
-		fmt.Println("Player WINS!")
-	case dScore > pScore:
-		fmt.Printf("Dealer WINS!")
-	case dScore == pScore:
-		fmt.Println("Draw!")
+
+	for gs.State == StateDealerTurn {
+		if gs.Dealer.Score() <= 16 || (gs.Dealer.Score() == 17 && gs.Dealer.MinScore() != 17) {
+			gs = Hit(gs)
+		} else {
+			gs = Stand(gs)
+		}
 	}
 }
 func draw(cards []deck.Card) (deck.Card, []deck.Card) {
