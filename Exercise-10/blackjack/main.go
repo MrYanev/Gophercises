@@ -70,27 +70,40 @@ func Deal(gs GameState) GameState {
 	return ret
 }
 
+func Hit(gs GameState) GameState {
+	ret := clone(gs)
+	hand := ret.CurrentPlayer()
+	var card deck.Card
+	card, ret.Deck = draw(ret.Deck)
+	*hand = append(*hand, card)
+	if hand.Score() > 21 {
+		return Stand(ret)
+	}
+	return ret
+}
+
+func Stand(gs GameState) GameState {
+	ret := clone(gs)
+	ret.State++
+	return ret
+}
+
 func main() {
 	var gs GameState
 	gs = Shuffle(gs)
-	var card deck.Card
-	var player, dealer Hand
-	for i := 0; i < 2; i++ {
-		for _, hand := range []*Hand{&player, &dealer} {
-			card, cards = draw(cards)
-			*hand = append(*hand, card)
-		}
-	}
+	gs = Deal(gs)
+
 	var input string
-	for input != "s" {
-		fmt.Println("Player: ", player)
-		fmt.Println("Dealer: ", dealer.DealerString())
+	for gs.State == StatePlayerTurn {
+		fmt.Println("Player: ", gs.Player)
+		fmt.Println("Dealer: ", gs.Dealer.DealerString())
 		fmt.Println("What will you do? (h)it, (s)tands?")
 		fmt.Scanf("%s\n", &input)
 		switch input {
 		case "h":
-			card, cards = draw(cards)
-			player = append(player, card)
+			gs = Hit(gs)
+		case "s":
+			gs = Stand(gs)
 		default:
 			fmt.Println("That's not a valid option!")
 		}
