@@ -7,6 +7,9 @@ import (
 )
 
 type AI interface {
+	Bet() int
+	Results(hand [][]deck.Card, dealer []deck.Card) 
+	Play(hand []deck.Card, dealer deck.Card)
 }
 
 type HumanAI struct{}
