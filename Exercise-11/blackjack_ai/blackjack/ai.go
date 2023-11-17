@@ -33,7 +33,7 @@ func (ai *HumanAI) Play(hand []deck.Card, dealer deck.Card) {
 	}
 }
 
-func (ai *HumanAI) Results(hand []deck.Card, dealer []deck.Card) {
+func (ai *HumanAI) Results(hand [][]deck.Card, dealer []deck.Card) {
 	fmt.Println("==FINAL HANDS==")
 	fmt.Println("Player: ", ret.Player, "\nScore:", pScore)
 	fmt.Println("Dealer: ", ret.Dealer, "\nScore:", dScore)
