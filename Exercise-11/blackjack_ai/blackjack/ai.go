@@ -11,6 +11,10 @@ type AI interface {
 
 type HumanAI struct{}
 
+func (ai *HumanAI) Bet() int {
+	return 1
+}
+
 func (ai *HumanAI) Play(hand []deck.Card, dealer deck.Card) {
 	for {
 		fmt.Println("Player: ", hand)
