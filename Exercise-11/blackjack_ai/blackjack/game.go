@@ -109,7 +109,7 @@ func (g *Game) Play(ai AI) int {
 	for i := 0; i < g.nHands; i++ {
 		shuffled := false
 		if len(g.deck) < min {
-			g.deck = deck.New(deck.Deck(g.nDecks), deck.Shuffle)
+			g.deck = deck.NewDeck(deck.Deck(g.nDecks), deck.Shuffle)
 			shuffled = true
 		}
 		bet(g, ai, shuffled)
