@@ -76,7 +76,7 @@ type hand struct {
 }
 
 func bet(g *Game, ai AI, shuffled bool) {
-	bet := ai.Bet(shuffled)
+	bet := ai.Bet()
 	if bet < 100 {
 		panic("bet must be at least 100")
 	}
