@@ -42,7 +42,7 @@ func (ai *HumanAI) Results(hand [][]deck.Card, dealer []deck.Card) {
 	fmt.Println("Dealer: ", ret.Dealer, "\nScore:", dScore)
 }
 
-type Moce func(GameState) GameState{}
+type Move func(GameState) GameState{}
 
 type GameState struct{}
 
