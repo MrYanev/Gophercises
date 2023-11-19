@@ -8,7 +8,7 @@ import (
 
 type AI interface {
 	Bet() int
-	Results(hand [][]deck.Card, dealer []deck.Card) 
+	Results(hand [][]deck.Card, dealer []deck.Card)
 	Play(hand []deck.Card, dealer deck.Card)
 }
 
@@ -36,13 +36,14 @@ func (ai *HumanAI) Play(hand []deck.Card, dealer deck.Card) {
 	}
 }
 
-func (ai *HumanAI) Results(hand [][]deck.Card, dealer []deck.Card) {
+func (ai *HumanAI) Results(hands [][]deck.Card, dealer []deck.Card) {
 	fmt.Println("==FINAL HANDS==")
-	fmt.Println("Player: ", ret.Player, "\nScore:", pScore)
-	fmt.Println("Dealer: ", ret.Dealer, "\nScore:", dScore)
+	fmt.Println("Player:")
+	for _, h := range hands {
+		fmt.Println(" ", h)
+	}
+	fmt.Println("Dealer:", dealer)
 }
-
-type Move func(GameState) GameState{}
 
 type GameState struct{}
 
