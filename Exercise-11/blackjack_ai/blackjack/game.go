@@ -135,8 +135,6 @@ func Score(hand ...deck.Card) int {
 	}
 	for _, c := range hand {
 		if c.Rank == deck.Ace {
-			// ace is currently worth 1, and we are changing it to be worth 11
-			// 11 - 1 = 10
 			return minScore + 10
 		}
 	}
