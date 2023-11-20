@@ -27,9 +27,9 @@ func (ai *HumanAI) Play(hand []deck.Card, dealer deck.Card) {
 		fmt.Scanf("%s\n", &input)
 		switch input {
 		case "h":
-			return Hit
+			return MoveHit()
 		case "s":
-			return Stand
+			return MoveStand()
 		default:
 			fmt.Println("That's not a valid option!")
 		}
@@ -43,14 +43,4 @@ func (ai *HumanAI) Results(hands [][]deck.Card, dealer []deck.Card) {
 		fmt.Println(" ", h)
 	}
 	fmt.Println("Dealer:", dealer)
-}
-
-type GameState struct{}
-
-func Hit(gs GameState) GameState {
-	return gs
-}
-
-func Stand(gs GameState) GameState {
-	return gs
 }
