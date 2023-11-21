@@ -15,6 +15,12 @@ const (
 
 type state int8
 
+type options struct {
+	Decks           int
+	Hands           int
+	BlackjackPayout float64
+}
+
 func New() Game {
 	return Game{
 		state:    statePlayerTurn,
@@ -24,13 +30,16 @@ func New() Game {
 }
 
 type Game struct {
-	// unexported fields
-	deck     []deck.Card
-	state    state
-	player   []deck.Card
-	dealer   []deck.Card
-	dealerAI AI
-	balance  int
+	Decks int
+	Hands int
+
+	deck            []deck.Card
+	state           state
+	player          []deck.Card
+	dealer          []deck.Card
+	dealerAI        AI
+	balance         int
+	blackjackPayout float64
 }
 
 func (g *Game) currentHand() *[]deck.Card {
