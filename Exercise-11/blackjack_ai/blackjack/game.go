@@ -7,7 +7,8 @@ import (
 )
 
 const (
-	statePlayerTurn state = iota
+	stateBet state = iota
+	statePlayerTurn
 	stateDealerTurn
 	stateHandOver
 )
