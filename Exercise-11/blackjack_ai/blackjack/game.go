@@ -21,17 +21,30 @@ type options struct {
 	BlackjackPayout float64
 }
 
-func New() Game {
-	return Game{
+func New(opts options) Game {
+	g := Game{
 		state:    statePlayerTurn,
 		dealerAI: dealerAI{},
 		balance:  0,
 	}
+	if opts.Decks == 0 {
+		opts.Decks = 3
+	}
+	if opts.Hands == 0 {
+		opts.Hands = 100
+	}
+	if opts.BlackjackPayout == 0.0 {
+		opts.BlackjackPayout = 1.5
+	}
+	g.nDecks = opts.Decks
+	g.Hands = opts.Hands
+	g.blackjackPayout = opts.BlackjackPayout
+	return g
 }
 
 type Game struct {
-	Decks int
-	Hands int
+	nDecks int
+	Hands  int
 
 	deck            []deck.Card
 	state           state
@@ -67,9 +80,12 @@ func deal(g *Game) {
 }
 
 func (g *Game) Play(ai AI) int {
-	g.deck = deck.NewDeck(deck.Deck(3), deck.Shuffle)
-
-	for i := 0; i < 2; i++ {
+	g.deck = nil
+	min := 53 * g.nDecks / 3
+	for i := 0; i < g.Hands; i++ {
+		if len(g.deck) < min {
+			g.deck = deck.NewDeck(deck.Deck(g.nDecks), deck.Shuffle)
+		}
 		deal(g)
 
 		for g.state == statePlayerTurn {
