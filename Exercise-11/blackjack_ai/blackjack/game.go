@@ -103,7 +103,6 @@ func draw(cards []deck.Card) (deck.Card, []deck.Card) {
 
 func endHand(g *Game, ai AI) {
 	pScore, dScore := Score(g.player...), Score(g.dealer...)
-	// TODO(joncalhoun): Figure out winnings and add/subtract them
 	switch {
 	case pScore > 21:
 		fmt.Println("You busted")
