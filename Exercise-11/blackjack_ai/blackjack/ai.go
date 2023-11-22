@@ -8,7 +8,7 @@ import (
 
 type AI interface {
 	Bet(shuffled bool) int
-	Results(hand [][]deck.Card, dealer []deck.Card)
+	Results(hands [][]deck.Card, dealer []deck.Card)
 	Play(hand []deck.Card, dealer deck.Card) Move
 }
 
@@ -26,7 +26,7 @@ func (ai dealerAI) Play(hand []deck.Card, dealer deck.Card) Move {
 	return MoveStand
 }
 
-func (ai dealerAI) Results(hand [][]deck.Card, dealer []deck.Card) {
+func (ai dealerAI) Results(hands [][]deck.Card, dealer []deck.Card) {
 	//Noop
 }
 
