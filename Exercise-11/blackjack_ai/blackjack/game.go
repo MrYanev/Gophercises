@@ -105,7 +105,13 @@ func (g *Game) Play(ai AI) int {
 			hand := make([]deck.Card, len(g.player))
 			copy(hand, g.player)
 			move := ai.Play(hand, g.dealer[0])
-			move(g)
+			err := move(g)
+			switch err {
+			case errBust:
+				MoveStand(g)
+			default:
+				panic(err)
+			}
 		}
 
 		for g.state == stateDealerTurn {
@@ -120,6 +126,10 @@ func (g *Game) Play(ai AI) int {
 	return g.balance
 }
 
+var (
+	errBust = errors.New("Hand score exceeded 21")
+)
+
 type Move func(*Game) error
 
 func MoveHit(g *Game) error {
@@ -128,7 +138,7 @@ func MoveHit(g *Game) error {
 	card, g.deck = draw(g.deck)
 	*hand = append(*hand, card)
 	if Score(*hand...) > 21 {
-		MoveStand(g)
+		return errBust
 	}
 	return nil
 }
