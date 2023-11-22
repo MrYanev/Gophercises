@@ -1,6 +1,7 @@
 package blackjack
 
 import (
+	"errors"
 	"fmt"
 
 	"github.com/MrYanev/Gophercises/Exercise-9/deck_of_cards/deck"
@@ -119,9 +120,9 @@ func (g *Game) Play(ai AI) int {
 	return g.balance
 }
 
-type Move func(*Game)
+type Move func(*Game) error
 
-func MoveHit(g *Game) {
+func MoveHit(g *Game) error {
 	hand := g.currentHand()
 	var card deck.Card
 	card, g.deck = draw(g.deck)
@@ -129,16 +130,21 @@ func MoveHit(g *Game) {
 	if Score(*hand...) > 21 {
 		MoveStand(g)
 	}
+	return nil
 }
 
-func MoveStand(g *Game) {
+func MoveStand(g *Game) error {
 	g.state++
+	return nil
 }
 
-func MoveDouble(g *Game) {
+func MoveDouble(g *Game) error {
+	if len(g.player) != 2 {
+		return errors.New("Can't double a single card hand!")
+	}
 	g.playerBet *= 2
 	MoveHit(g)
-	MoveStand(g)
+	return MoveStand(g)
 }
 
 func draw(cards []deck.Card) (deck.Card, []deck.Card) {
