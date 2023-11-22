@@ -184,7 +184,7 @@ func MoveSplit(g *Game) error {
 		cards: []deck.Card{(*cards)[1]},
 		bet:   g.player[g.handIdx].bet,
 	})
-	*cards = (*cards)[:1]
+	g.player[g.handIdx].cards = (*cards)[:1]
 	return nil
 }
 
