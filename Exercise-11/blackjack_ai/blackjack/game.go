@@ -141,8 +141,15 @@ func draw(cards []deck.Card) (deck.Card, []deck.Card) {
 
 func endHand(g *Game, ai AI) {
 	pScore, dScore := Score(g.player...), Score(g.dealer...)
+	pBlackjack, dBlackjack := Blackjack(g.player...), Blackjack(g.dealer...)
 	winnings := g.playerBet
 	switch {
+	case pBlackjack && dBlackjack:
+		winnings = 0
+	case dBlackjack:
+		winnings = -winnings
+	case pBlackjack:
+		winnings = int(float64(winnings) * g.blackjackPayout)
 	case pScore > 21:
 		fmt.Println("You busted")
 		winnings *= -1
@@ -185,6 +192,10 @@ func Soft(hand ...deck.Card) bool {
 	minScore := minScore(hand...)
 	score := Score(hand...)
 	return minScore != score
+}
+
+func Blackjack(hand ...deck.Card) bool {
+	return len(hand) == 2 && Score(hand...) == 21
 }
 
 func minScore(hand ...deck.Card) int {
