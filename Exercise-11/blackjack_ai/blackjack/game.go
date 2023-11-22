@@ -135,7 +135,7 @@ func (g *Game) Play(ai AI) int {
 			move(g)
 		}
 
-		endHand(g, ai)
+		endRound(g, ai)
 	}
 	return g.balance
 }
