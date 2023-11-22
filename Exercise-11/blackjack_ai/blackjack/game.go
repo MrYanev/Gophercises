@@ -172,6 +172,22 @@ func MoveStand(g *Game) error {
 	return errors.New("Invalid state")
 }
 
+func MoveSplit(g *Game) error {
+	cards := g.currentHand()
+	if len(*cards) != 2 {
+		return errors.New("You can only slplit two of the same card!")
+	}
+	if (*cards)[0].Rank != (*cards)[1].Rank {
+		return errors.New("Both cards must be the same rank!")
+	}
+	g.player = append(g.player, hand{
+		cards: []deck.Card{(*cards)[1]},
+		bet:   g.player[g.handIdx].bet,
+	})
+	*cards = (*cards)[:1]
+	return nil
+}
+
 func MoveDouble(g *Game) error {
 	if len(g.player) != 2 {
 		return errors.New("Can't double a single card hand!")
