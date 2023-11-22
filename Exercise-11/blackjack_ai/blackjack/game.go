@@ -109,6 +109,8 @@ func (g *Game) Play(ai AI) int {
 			switch err {
 			case errBust:
 				MoveStand(g)
+			case nil:
+				//noop
 			default:
 				panic(err)
 			}
