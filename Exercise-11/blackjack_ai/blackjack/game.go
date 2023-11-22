@@ -135,6 +135,12 @@ func MoveStand(g *Game) {
 	g.state++
 }
 
+func MoveDouble(g *Game) {
+	g.playerBet *= 2
+	MoveHit(g)
+	MoveStand(g)
+}
+
 func draw(cards []deck.Card) (deck.Card, []deck.Card) {
 	return cards[0], cards[1:]
 }
