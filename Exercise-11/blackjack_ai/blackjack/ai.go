@@ -60,6 +60,8 @@ func (ai humanAI) Play(hand []deck.Card, dealer deck.Card) Move {
 			return MoveStand
 		case "d":
 			return MoveDouble
+		case "p":
+			return MoveSplit
 		default:
 			fmt.Println("That's not a valid option!")
 		}
