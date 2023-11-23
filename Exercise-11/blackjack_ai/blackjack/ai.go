@@ -36,8 +36,6 @@ func HumanAI() AI {
 
 type humanAI struct{}
 
-//
-
 func (ai humanAI) Bet(shuffled bool) int {
 	if shuffled {
 		fmt.Println("The deck was just shuffled!")
