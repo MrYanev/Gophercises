@@ -15,10 +15,10 @@ type basicAI struct {
 
 func (ai *basicAI) Bet(shuffled bool) int {
 	if shuffled {
-		ai.score = 0
+		ai.count = 0
 		ai.seen = 0
 	}
-	trueScore := ai.score / ((ai.decks*52 - ai.seen) / 52)
+	trueScore := ai.count / ((ai.decks*52 - ai.seen) / 52)
 	switch {
 	case trueScore >= 14:
 		return 100000
@@ -54,22 +54,22 @@ func (ai *basicAI) Play(hand []deck.Card, dealer deck.Card) blackjack.Move {
 
 func (ai *basicAI) Results(hands [][]deck.Card, dealer []deck.Card) {
 	for _, card := range dealer {
-		ai.count(card)
+		ai.Count(card)
 	}
 	for _, hand := range hands {
 		for _, card := range hand {
-			ai.count(card)
+			ai.Count(card)
 		}
 	}
 }
 
-func (ai *basicAI) count(card deck.Card) {
+func (ai *basicAI) Count(card deck.Card) {
 	score := blackjack.Score(card)
 	switch {
 	case score >= 10:
-		ai.score--
+		ai.count--
 	case score <= 6:
-		ai.score++
+		ai.count++
 	}
 	ai.seen++
 }
