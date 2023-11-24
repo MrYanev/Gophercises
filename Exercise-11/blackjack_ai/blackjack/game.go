@@ -83,6 +83,7 @@ func bet(g *Game, ai AI, shuffled bool) {
 
 func deal(g *Game) {
 	playerHand := make([]deck.Card, 0, 5)
+	g.handIdx = 0
 	g.dealer = make([]deck.Card, 0, 5)
 	var card deck.Card
 	for i := 0; i < 2; i++ {
