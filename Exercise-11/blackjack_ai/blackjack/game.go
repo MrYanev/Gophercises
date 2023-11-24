@@ -190,7 +190,7 @@ func MoveSplit(g *Game) error {
 }
 
 func MoveDouble(g *Game) error {
-	if len(g.player) != 2 {
+	if len(*g.currentHand()) != 2 {
 		return errors.New("Can't double a single card hand!")
 	}
 	g.playerBet *= 2
