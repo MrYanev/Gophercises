@@ -8,7 +8,7 @@ import (
 )
 
 type basicAI struct {
-	score int
+	count int
 	seen  int
 	decks int
 }
@@ -81,6 +81,8 @@ func main() {
 		BlackjackPayout: 1.5,
 	}
 	game := blackjack.New(opts)
-	winnings := game.Play(blackjack.HumanAI())
+	winnings := game.Play(&basicAI{
+		decks: 4,
+	})
 	fmt.Println(winnings)
 }
