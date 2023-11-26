@@ -28,6 +28,7 @@ func (ai dealerAI) Play(hand []deck.Card, dealer deck.Card) Move {
 
 func (ai dealerAI) Results(hands [][]deck.Card, dealer []deck.Card) {
 	//Noop
+	///
 }
 
 func HumanAI() AI {
