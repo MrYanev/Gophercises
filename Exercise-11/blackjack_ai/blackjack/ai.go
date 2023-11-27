@@ -35,6 +35,8 @@ func HumanAI() AI {
 	return humanAI{}
 }
 
+//
+
 type humanAI struct{}
 
 func (ai humanAI) Bet(shuffled bool) int {
