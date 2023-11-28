@@ -9,7 +9,7 @@ import (
 
 func main() {
 	fileName := "birthday_001.txt"
-	newName, err := match(fileName)
+	newName, err := match(fileName, 4)
 	if err != nil {
 		fmt.Println("no match")
 		os.Exit(1)
@@ -20,7 +20,7 @@ func main() {
 
 // Returns the file name or an error
 // If the file name didn't match the pattern
-func match(fileName string) (string, error) {
+func match(fileName string, total int) (string, error) {
 	pieces := strings.Split(fileName, ".")
 	ext := pieces[len(pieces)-1]
 	tmp := strings.Join(pieces[0:len(pieces)-1], ".")
@@ -30,5 +30,5 @@ func match(fileName string) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("%s didn't match our pattern!", fileName)
 	}
-	return fmt.Sprintf("%s - %d", name, number, ext), nil
+	return fmt.Sprintf("%s - %d of %d.%s", strings.Title(name), number, total, ext), nil
 }
