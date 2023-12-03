@@ -15,7 +15,6 @@ func main() {
 		os.Exit(1)
 	}
 	fmt.Println(newName)
-	//
 }
 
 // Returns the file name or an error
