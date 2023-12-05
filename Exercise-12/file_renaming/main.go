@@ -17,6 +17,8 @@ func main() {
 	fmt.Println(newName)
 }
 
+///
+
 // Returns the file name or an error
 // If the file name didn't match the pattern
 func match(fileName string, total int) (string, error) {
